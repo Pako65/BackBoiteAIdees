@@ -17,9 +17,11 @@ public partial class Users
 
     public string Password { get; set; }
 
-    public bool Admin { get; set; }
+    public byte Admin { get; set; }
 
     public virtual ICollection<Comment> Comment { get; set; } = new List<Comment>();
 
     public virtual ICollection<Idea> Idea { get; set; } = new List<Idea>();
+
+    public virtual ICollection<Likes> Likes { get; set; } = new List<Likes>();
 }

@@ -23,5 +23,7 @@ public partial class Idea
 
     public virtual Users FkUsers { get; set; }
 
-    public virtual ICollection<Category> Category { get; set; } = new List<Category>();
+    public virtual ICollection<IdeaGetCategory> IdeaGetCategory { get; set; } = new List<IdeaGetCategory>();
+
+    public virtual ICollection<Likes> Likes { get; set; } = new List<Likes>();
 }

@@ -11,5 +11,5 @@ public partial class Category
 
     public string Name { get; set; }
 
-    public virtual ICollection<Idea> Idea { get; set; } = new List<Idea>();
+    public virtual ICollection<IdeaGetCategory> IdeaGetCategory { get; set; } = new List<IdeaGetCategory>();
 }

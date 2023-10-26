@@ -8,10 +8,6 @@ namespace BackBAI.Models;
 
 public partial class ideeContext : DbContext
 {
-    public ideeContext()
-    {
-    }
-
     public ideeContext(DbContextOptions<ideeContext> options)
         : base(options)
     {
@@ -23,19 +19,17 @@ public partial class ideeContext : DbContext
 
     public virtual DbSet<Idea> Idea { get; set; }
 
+    public virtual DbSet<IdeaGetCategory> IdeaGetCategory { get; set; }
+
     public virtual DbSet<Likes> Likes { get; set; }
 
     public virtual DbSet<Users> Users { get; set; }
-
-//    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-//#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-//        => optionsBuilder.UseSqlServer("Data Source=.;Initial Catalog=boiteIdee;Integrated Security=True");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Category>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__category__3213E83F29C1C2E9");
+            entity.HasKey(e => e.Id).HasName("PK__category__3213E83F2DBBD113");
 
             entity.ToTable("category");
 
@@ -48,14 +42,13 @@ public partial class ideeContext : DbContext
 
         modelBuilder.Entity<Comment>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__comment__3213E83F7E95457F");
+            entity.HasKey(e => e.Id).HasName("PK__comment__3213E83FE2E54CED");
 
             entity.ToTable("comment");
 
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.CreatedAt)
                 .HasDefaultValueSql("(getdate())")
-                .HasColumnType("datetime")
                 .HasColumnName("created_at");
             entity.Property(e => e.FkIdeaId).HasColumnName("fk_idea_id");
             entity.Property(e => e.FkUsersIdComment).HasColumnName("fk_users_id_comment");
@@ -63,31 +56,26 @@ public partial class ideeContext : DbContext
                 .IsRequired()
                 .HasMaxLength(255)
                 .HasColumnName("text");
-            entity.Property(e => e.UpdatedAt)
-                .HasColumnType("datetime")
-                .HasColumnName("updated_at");
+            entity.Property(e => e.UpdatedAt).HasColumnName("updated_at");
 
             entity.HasOne(d => d.FkIdea).WithMany(p => p.Comment)
                 .HasForeignKey(d => d.FkIdeaId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__comment__fk_idea__4222D4EF");
 
             entity.HasOne(d => d.FkUsersIdCommentNavigation).WithMany(p => p.Comment)
                 .HasForeignKey(d => d.FkUsersIdComment)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__comment__fk_user__412EB0B6");
         });
 
         modelBuilder.Entity<Idea>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__idea__3213E83F0CFE3E90");
+            entity.HasKey(e => e.Id).HasName("PK__idea__3213E83F3B746393");
 
             entity.ToTable("idea");
 
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.CreatedAt)
                 .HasDefaultValueSql("(getdate())")
-                .HasColumnType("datetime")
                 .HasColumnName("created_at");
             entity.Property(e => e.Description)
                 .HasMaxLength(255)
@@ -97,58 +85,55 @@ public partial class ideeContext : DbContext
                 .IsRequired()
                 .HasMaxLength(255)
                 .HasColumnName("title");
-            entity.Property(e => e.UpdatedAt)
-                .HasColumnType("datetime")
-                .HasColumnName("updated_at");
+            entity.Property(e => e.UpdatedAt).HasColumnName("updated_at");
 
             entity.HasOne(d => d.FkUsers).WithMany(p => p.Idea)
                 .HasForeignKey(d => d.FkUsersId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__idea__fk_users_i__3B75D760");
+        });
 
-            entity.HasMany(d => d.Category).WithMany(p => p.Idea)
-                .UsingEntity<Dictionary<string, object>>(
-                    "IdeaGetCategory",
-                    r => r.HasOne<Category>().WithMany()
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.ClientSetNull)
-                        .HasConstraintName("FK__idea_get___categ__48CFD27E"),
-                    l => l.HasOne<Idea>().WithMany()
-                        .HasForeignKey("IdeaId")
-                        .OnDelete(DeleteBehavior.ClientSetNull)
-                        .HasConstraintName("FK__idea_get___idea___47DBAE45"),
-                    j =>
-                    {
-                        j.HasKey("IdeaId", "CategoryId").HasName("PK__idea_get__97E8BA9342F3FE54");
-                        j.ToTable("idea_get_category");
-                        j.IndexerProperty<int>("IdeaId").HasColumnName("idea_id");
-                        j.IndexerProperty<int>("CategoryId").HasColumnName("category_id");
-                    });
+        modelBuilder.Entity<IdeaGetCategory>(entity =>
+        {
+            entity.HasKey(e => new { e.IdeaId, e.CategoryId }).HasName("PK__idea_get__97E8BA93B29F85E3");
+
+            entity.ToTable("idea_get_category");
+
+            entity.Property(e => e.IdeaId).HasColumnName("idea_id");
+            entity.Property(e => e.CategoryId).HasColumnName("category_id");
+
+            entity.HasOne(d => d.Category).WithMany(p => p.IdeaGetCategory)
+                .HasForeignKey(d => d.CategoryId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("fk_category");
+
+            entity.HasOne(d => d.Idea).WithMany(p => p.IdeaGetCategory)
+                .HasForeignKey(d => d.IdeaId)
+                .HasConstraintName("fk_idea_category");
         });
 
         modelBuilder.Entity<Likes>(entity =>
         {
-            entity
-                .HasNoKey()
-                .ToTable("likes");
+            entity.HasKey(e => new { e.UsersId, e.IdeaId }).HasName("PK__likes__760C140B83817DD4");
 
-            entity.Property(e => e.FkIdeaIdLikes).HasColumnName("fk_idea_id_likes");
-            entity.Property(e => e.FkUsersIdLikes).HasColumnName("fk_users_id_likes");
+            entity.ToTable("likes");
 
-            entity.HasOne(d => d.FkIdeaIdLikesNavigation).WithMany()
-                .HasForeignKey(d => d.FkIdeaIdLikes)
+            entity.Property(e => e.UsersId).HasColumnName("users_id");
+            entity.Property(e => e.IdeaId).HasColumnName("idea_id");
+
+            entity.HasOne(d => d.Idea).WithMany(p => p.Likes)
+                .HasForeignKey(d => d.IdeaId)
+                .HasConstraintName("FK__likes__idea_id__45F365D3");
+
+            entity.HasOne(d => d.Users).WithMany(p => p.Likes)
+                .HasForeignKey(d => d.UsersId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__likes__fk_idea_i__44FF419A");
-
-            entity.HasOne(d => d.FkUsersIdLikesNavigation).WithMany()
-                .HasForeignKey(d => d.FkUsersIdLikes)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__likes__fk_users___440B1D61");
+                .HasConstraintName("FK__likes__users_id__44FF419A");
         });
 
         modelBuilder.Entity<Users>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__users__3213E83FDBCDECFD");
+            entity.HasKey(e => e.Id).HasName("PK__users__3213E83F21D47E33");
 
             entity.ToTable("users");
 

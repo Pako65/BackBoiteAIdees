@@ -27,6 +27,7 @@ namespace BackBAI.Controllers
             return Ok(result);
         }
 
+
         [HttpPost]
         public IActionResult PostIdea([FromBody] Idea idea)
         {
@@ -45,42 +46,40 @@ namespace BackBAI.Controllers
             }
         }
 
-        [HttpDelete("{id}")]
-        public IActionResult DeleteIdea(int id)
+        [HttpGet("{id}", Name = "GetIdeaById")]
+        public IActionResult GetIdeaById(int id)
         {
-            using (var transaction = _context.Database.BeginTransaction())
+            var resultById = _boiteAideesServices.GetIdeaById(id);
+            if (resultById == null)
             {
-                try
-                {
-                    // Supprime les likes associés à l'idée
-                    _context.Database.ExecuteSqlRaw("DELETE FROM Likes WHERE FkIdeaIdLikes = {0}", id);
-
-                    // Supprime les commentaires associés
-                    _context.Comment.RemoveRange(_context.Comment.Where(c => c.FkIdeaId == id));
-
-                    // Supprime l'idée
-                    var idea = _context.Idea.Find(id);
-                    if (idea != null)
-                    {
-                        _context.Idea.Remove(idea);
-                    }
-
-                    _context.SaveChanges();
-
-                    transaction.Commit();
-
-                    return NoContent(); // Retourne une réponse 204 (No Content) si la suppression est réussie.
-                }
-                catch (Exception ex)
-                {
-                    transaction.Rollback();
-                    return StatusCode(500); // Une erreur s'est produite lors de la suppression.
-                }
+                return NotFound();
             }
+            return Ok(resultById);
         }
-        // faut savoir comment faire la table like, est ce que tu laisses la jointure bizarre, est ce que tu fais une table ?
-        // car erreur sur méthode Delete, impossible de supprimer l'idée a cause des autres idea dans d'autre table (fk_idea...)
+        [HttpDelete("{id}", Name = "DeleteBoiteAideesById")]
+        public IActionResult DeleteBoiteAideesById(int id)
+        {
+            var resultDeleteById = _boiteAideesServices.DeleteIdeaAndLikes(id);
 
+            if (resultDeleteById == false)
+            {
+                return NotFound();
+            }
+            return Ok(resultDeleteById);
+        }
+
+        [HttpPut("{id}", Name = "PutBoiteAideesById")]
+        public IActionResult PutBoiteAidees(int id, [FromBody] Idea idea)
+        {
+            var resultPutById = _boiteAideesServices.Put(id, idea);
+
+            if (!resultPutById)
+            {
+                return NotFound();
+            }
+
+            return Ok(resultPutById);
+        }
 
     }
 

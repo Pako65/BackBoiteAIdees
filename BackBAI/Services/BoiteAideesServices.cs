@@ -19,6 +19,53 @@ namespace BackBAI.Services
             var result = _context.Idea.ToList();
             return result;
         }
+        public Idea? GetIdeaById(int id)
+        {
+            var resultById = _context.Idea.FirstOrDefault(b => b.Id == id);
+            if (resultById == null)
+            {
+                return null;
+            }
+            return resultById;
+        }
+        public bool Put(int id, Idea idea)
+        {
+            var postBoiteAidees = _context.Idea.Find(id);
+
+            if (postBoiteAidees == null)
+            {
+                return false;
+            }
+
+            if (postBoiteAidees.Title != null)
+                postBoiteAidees.Title = idea.Title;
+            
+            if (postBoiteAidees.Description != null)
+                postBoiteAidees.Description = idea.Description;
+        
+
+            _context.SaveChanges();
+
+            return true;
+
+        }
+        public bool DeleteIdeaAndLikes(int ideaId)
+        {
+            var idea = _context.Idea.Find(ideaId);
+
+            if (idea == null)
+            {
+                // L'idée n'existe pas, retournez false ou gérez l'erreur.
+                return false;
+            }
+            // Supprimez ensuite l'idée elle-même.
+            _context.Idea.Remove(idea);
+
+            // Enregistrez les modifications dans la base de données.
+            _context.SaveChanges();
+
+            return true;
+        }
 
         //public bool DeleteById(int id)
         //{

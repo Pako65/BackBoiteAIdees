@@ -5,13 +5,13 @@ using System.Collections.Generic;
 
 namespace BackBAI.Models;
 
-public partial class Likes
+public partial class IdeaGetCategory
 {
-    public int UsersId { get; set; }
-
     public int IdeaId { get; set; }
 
-    public virtual Idea Idea { get; set; }
+    public int CategoryId { get; set; }
 
-    public virtual Users Users { get; set; }
+    public virtual Category Category { get; set; }
+
+    public virtual Idea Idea { get; set; }
 }
