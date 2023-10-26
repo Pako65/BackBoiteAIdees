@@ -9,6 +9,9 @@ namespace BackBAI.Services
     {
         private readonly ideeContext _context;
 
+        // Modifie les messages de retour, au lieu de bool mettre string ou un object
+        // c'est plus propre
+
         public BoiteAideesServices(ideeContext context)
         {
             _context = context;

@@ -39,6 +39,7 @@ namespace BackBAI.Controllers
                 _context.SaveChanges();
 
                 return Ok("L'idée a été ajoutée avec succès.");
+                // changez le OK en created, cela permet de retourner le created, ce qui est mieux
             }
             catch (Exception ex)
             {
