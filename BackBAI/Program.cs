@@ -12,11 +12,13 @@ builder.Services.AddScoped<BoiteAideesServices>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<ideeContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("boiteIdee")));
+
+// Configure CORS
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(builder =>
     {
-        builder.AllowAnyOrigin()
+        builder.AllowAnyOrigin() // Vous pouvez spécifier les origines autorisées ici
                .AllowAnyMethod()
                .AllowAnyHeader();
     });
@@ -33,6 +35,8 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+// Use CORS middleware before other middleware
+app.UseCors();
 app.UseAuthorization();
 
 app.MapControllers();

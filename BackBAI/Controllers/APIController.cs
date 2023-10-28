@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 namespace BackBAI.Controllers
 {
     [ApiController]
-    [Route("controller")]
+    [Route("api")]
 
     public class ApiController : ControllerBase
     {
@@ -20,7 +20,7 @@ namespace BackBAI.Controllers
             _boiteAideesServices = boiteAideesServices;
         }
 
-        [HttpGet(Name = "GetIdea")]
+        [HttpGet("getAll")]
         public IActionResult GetIdees()
         {
             var result = _boiteAideesServices.Get();
@@ -28,7 +28,7 @@ namespace BackBAI.Controllers
         }
 
 
-        [HttpPost]
+        [HttpPost("postIdea")]
         public IActionResult PostIdea([FromBody] Idea idea)
         {
             try
@@ -47,7 +47,7 @@ namespace BackBAI.Controllers
             }
         }
 
-        [HttpGet("{id}", Name = "GetIdeaById")]
+        [HttpGet("{id}/getIdeaById")]
         public IActionResult GetIdeaById(int id)
         {
             var resultById = _boiteAideesServices.GetIdeaById(id);
@@ -57,7 +57,8 @@ namespace BackBAI.Controllers
             }
             return Ok(resultById);
         }
-        [HttpDelete("{id}", Name = "DeleteBoiteAideesById")]
+        [HttpDelete("{id}/DeleteIdeaById")]
+
         public IActionResult DeleteBoiteAideesById(int id)
         {
             var resultDeleteById = _boiteAideesServices.DeleteIdeaAndLikes(id);
@@ -69,7 +70,8 @@ namespace BackBAI.Controllers
             return Ok(resultDeleteById);
         }
 
-        [HttpPut("{id}", Name = "PutBoiteAideesById")]
+        [HttpPut("{id}/PutIdea")]
+
         public IActionResult PutBoiteAidees(int id, [FromBody] Idea idea)
         {
             var resultPutById = _boiteAideesServices.Put(id, idea);
