@@ -28,24 +28,21 @@ namespace BackBAI.Controllers
         }
 
 
-        [HttpPost("postIdea")]
-        public IActionResult PostIdea([FromBody] Idea idea)
+        [HttpPost]
+        public async Task<IActionResult> CreateIdea([FromBody] Idea idea)
         {
-            try
+            if (idea == null)
             {
-                //idea.Id = 0; 
-                idea.CreatedAt = DateTime.Now;
-                _context.Idea.Add(idea);
-                _context.SaveChanges();
+                return BadRequest("Les données de l'idée sont invalides.");
+            }
 
-                return Ok("L'idée a été ajoutée avec succès.");
-                // changez le OK en created, cela permet de retourner le created, ce qui est mieux
-            }
-            catch (Exception ex)
-            {
-                return BadRequest($"Erreur lors de l'ajout de l'idée : {ex.Message}");
-            }
+            int ideaId = await _boiteAideesServices.CreateIdeaAsync(idea);
+
+            // Assurez-vous que le nom de l'action "GetIdea" correspond à l'action de récupération de l'idée par ID.
+            // Vous devrez peut-être ajuster le nom de l'action en fonction de votre propre routage.
+            return CreatedAtAction("GetIdeaById", new { id = ideaId }, idea);
         }
+
 
         [HttpGet("{id}/getIdeaById")]
         public IActionResult GetIdeaById(int id)

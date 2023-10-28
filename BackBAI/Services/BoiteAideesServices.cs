@@ -31,6 +31,14 @@ namespace BackBAI.Services
             }
             return resultById;
         }
+        public async Task<int> CreateIdeaAsync(Idea idea)
+        {
+            // Vous pouvez ajouter la logique de validation ici si nécessaire
+            _context.Idea.Add(idea);
+            await _context.SaveChangesAsync();
+            return idea.Id;
+        }
+
         public bool Put(int id, Idea idea)
         {
             var postBoiteAidees = _context.Idea.Find(id);
