@@ -87,22 +87,12 @@ namespace BackBAI.Controllers
 
 // JSON POUR LE POST
 //{
-//    "title": "Mon idée",
-//  "description": "Description de mon idée",
-//  "createdAt": "2023-10-24T17:32:58.195Z",
-//  "updatedAt": "2023-10-24T17:32:58.195Z",
-//  "fkUsersId": 1, 
-//  "comment": [
+//    "Title": "Nouvelle idée",
+//  "FkUsersId": 1,
+//  "IdeaGetCategory": [
 //    {
-//        "text": "Commentaire sur mon idée",
-//      "createdAt": "2023-10-24T17:32:58.195Z",
-//      "updatedAt": "2023-10-24T17:32:58.195Z",
-//      "fkUsersIdComment": 2
+//        "CategoryId": 1
 //    }
 //  ],
-//  "category": [
-//    {
-//        "name": "Nom de la catégorie"
-//    }
-//  ]
+//  "Description": "Description de la nouvelle idée"
 //}
