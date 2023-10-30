@@ -22,6 +22,11 @@ namespace BackBAI.Services
             var result = _context.Idea.ToList();
             return result;
         }
+        public IEnumerable<Category> GetCategory()
+        {
+            var category = _context.Category.ToList();
+            return category;
+        }
         public Idea? GetIdeaById(int id)
         {
             var resultById = _context.Idea.FirstOrDefault(b => b.Id == id);
@@ -31,13 +36,22 @@ namespace BackBAI.Services
             }
             return resultById;
         }
-        public async Task<int> CreateIdeaAsync(Idea idea)
+
+        public Idea CreateIdea(Idea idea)
         {
-            // Vous pouvez ajouter la logique de validation ici si nécessaire
+            // Vous pouvez ajouter ici la logique de création de l'idée, par exemple :
             _context.Idea.Add(idea);
-            await _context.SaveChangesAsync();
-            return idea.Id;
+            _context.SaveChanges();
+
+            return idea;
         }
+        //public async Task<int> CreateIdeaAsync(Idea idea)
+        //{
+        //    // Vous pouvez ajouter la logique de validation ici si nécessaire
+        //    _context.Idea.Add(idea);
+        //    await _context.SaveChangesAsync();
+        //    return idea.Id;
+        //}
 
         public bool Put(int id, Idea idea)
         {

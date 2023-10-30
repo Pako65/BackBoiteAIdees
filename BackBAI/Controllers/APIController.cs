@@ -20,28 +20,58 @@ namespace BackBAI.Controllers
             _boiteAideesServices = boiteAideesServices;
         }
 
-        [HttpGet("getAll")]
+        [HttpGet("GetAll")]
         public IActionResult GetIdees()
         {
             var result = _boiteAideesServices.Get();
             return Ok(result);
         }
-
-
-        [HttpPost]
-        public async Task<IActionResult> CreateIdea([FromBody] Idea idea)
+        [HttpGet("GetAllComment")]
+        public IActionResult GetCategory()
         {
-            if (idea == null)
+            var category = _boiteAideesServices.GetCategory();
+            return Ok(category);
+        }
+
+        [HttpPost("PostIdea")]
+        public IActionResult CreateIdea([FromBody]IdeaPresenter ideaPresenter)
+        {
+            var newIdea = new Idea
             {
-                return BadRequest("Les données de l'idée sont invalides.");
+                Title = ideaPresenter.Title,
+                Description = ideaPresenter.Description,
+                FkUsersId = ideaPresenter.FkUsersId,
+            };
+
+            if (ideaPresenter.IdeaGetCategory != null && ideaPresenter.IdeaGetCategory.Any())
+            {
+                newIdea.IdeaGetCategory = ideaPresenter.IdeaGetCategory
+                    .Select(categoryDTO => new IdeaGetCategory
+                    {
+                        CategoryId = categoryDTO.CategoryId,
+                        Idea = newIdea
+                    })
+                    .ToList();
             }
 
-            int ideaId = await _boiteAideesServices.CreateIdeaAsync(idea);
-
-            // Assurez-vous que le nom de l'action "GetIdea" correspond à l'action de récupération de l'idée par ID.
-            // Vous devrez peut-être ajuster le nom de l'action en fonction de votre propre routage.
-            return CreatedAtAction("GetIdeaById", new { id = ideaId }, idea);
+            _boiteAideesServices.CreateIdea(newIdea);
+            return Ok("Idea created youpi");
         }
+
+        //[HttpPost("postIdea")]
+        //public async Task<IActionResult> CreateIdea([FromBody] Idea idea)
+        //{
+        //    if (idea == null)
+        //    {
+        //        return BadRequest("Les données de l'idée sont invalides.");
+        //    }
+
+        //    int ideaId = await _boiteAideesServices.CreateIdeaAsync(idea);
+
+        //    // Assurez-vous que le nom de l'action "GetIdea" correspond à l'action de récupération de l'idée par ID.
+        //    // Vous devrez peut-être ajuster le nom de l'action en fonction de votre propre routage.
+        //    return CreatedAtAction("GetIdeaById", new { id = ideaId }, idea);
+        //}
 
 
         [HttpGet("{id}/getIdeaById")]
