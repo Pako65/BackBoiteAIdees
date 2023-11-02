@@ -3,6 +3,7 @@ using BackBAI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ActionConstraints;
 using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.Design;
 
 namespace BackBAI.Controllers
 {
@@ -32,6 +33,38 @@ namespace BackBAI.Controllers
             var category = _boiteAideesServices.GetCategory();
             return Ok(category);
         }
+        [HttpGet("GetAllUsers")]
+        public IActionResult GetUsers()
+        {
+            var users = _boiteAideesServices.GetUsers();
+            return Ok(users);
+        }
+        // ajoute un nouvel utilisateurs dans la base avec le JSON envoyé depuis supabase
+        [HttpPost("CreateNewUsers")]
+        public IActionResult Post(WebhookDto webhookDto)
+        {
+            // Accédez aux propriétés email et encrypted_password de l'objet Record
+
+            string email = webhookDto.record?.email;
+            string encryptedPassword = webhookDto.record?.encrypted_password;
+
+            if (!string.IsNullOrWhiteSpace(email) && !string.IsNullOrWhiteSpace(encryptedPassword))
+            {
+                var user = new Users
+                {
+                    Email = email,
+                    Password = encryptedPassword
+                };
+
+                _context.Users.Add(user);
+                _context.SaveChanges(); // Enregistrez les changements en base de données
+            }
+
+
+            return Ok("Données email et encrypted_password ajoutées en base de données avec succès.");
+        }
+
+    
 
         [HttpPost("PostIdea")]
         public IActionResult CreateIdea([FromBody]IdeaPresenter ideaPresenter)
