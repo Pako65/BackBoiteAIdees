@@ -40,7 +40,7 @@
          "ObjectType": 0
       }
    ],
-   "UiHint": "paquito.boiteIdee.dbo",
+   "UiHint": "nicolas_c.boiteIdee.dbo",
    "UncountableWords": null,
    "UseBoolPropertiesWithoutDefaultSql": false,
    "UseDatabaseNames": false,

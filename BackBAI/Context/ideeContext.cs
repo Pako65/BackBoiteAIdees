@@ -29,7 +29,7 @@ public partial class ideeContext : DbContext
     {
         modelBuilder.Entity<Category>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__category__3213E83F2DBBD113");
+            entity.HasKey(e => e.Id).HasName("PK__category__3213E83FCCB8389F");
 
             entity.ToTable("category");
 
@@ -42,7 +42,7 @@ public partial class ideeContext : DbContext
 
         modelBuilder.Entity<Comment>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__comment__3213E83FE2E54CED");
+            entity.HasKey(e => e.Id).HasName("PK__comment__3213E83F62AD442F");
 
             entity.ToTable("comment");
 
@@ -69,7 +69,7 @@ public partial class ideeContext : DbContext
 
         modelBuilder.Entity<Idea>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__idea__3213E83F3B746393");
+            entity.HasKey(e => e.Id).HasName("PK__idea__3213E83F282380BA");
 
             entity.ToTable("idea");
 
@@ -95,7 +95,7 @@ public partial class ideeContext : DbContext
 
         modelBuilder.Entity<IdeaGetCategory>(entity =>
         {
-            entity.HasKey(e => new { e.IdeaId, e.CategoryId }).HasName("PK__idea_get__97E8BA93B29F85E3");
+            entity.HasKey(e => new { e.IdeaId, e.CategoryId }).HasName("PK__idea_get__97E8BA938746D2B6");
 
             entity.ToTable("idea_get_category");
 
@@ -114,7 +114,7 @@ public partial class ideeContext : DbContext
 
         modelBuilder.Entity<Likes>(entity =>
         {
-            entity.HasKey(e => new { e.UsersId, e.IdeaId }).HasName("PK__likes__760C140B83817DD4");
+            entity.HasKey(e => new { e.UsersId, e.IdeaId }).HasName("PK__likes__760C140B619E89CA");
 
             entity.ToTable("likes");
 
@@ -133,7 +133,7 @@ public partial class ideeContext : DbContext
 
         modelBuilder.Entity<Users>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__users__3213E83F21D47E33");
+            entity.HasKey(e => e.Id).HasName("PK__users__3213E83F3BF994C5");
 
             entity.ToTable("users");
 
@@ -143,14 +143,6 @@ public partial class ideeContext : DbContext
                 .IsRequired()
                 .HasMaxLength(255)
                 .HasColumnName("email");
-            entity.Property(e => e.Firstname)
-                .IsRequired()
-                .HasMaxLength(255)
-                .HasColumnName("firstname");
-            entity.Property(e => e.Lastname)
-                .IsRequired()
-                .HasMaxLength(255)
-                .HasColumnName("lastname");
             entity.Property(e => e.Password)
                 .IsRequired()
                 .HasMaxLength(255)
