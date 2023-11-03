@@ -1,4 +1,5 @@
 ﻿using BackBAI.Models;
+using BackBAI.Models.DTO;
 using BackBAI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ActionConstraints;
@@ -40,18 +41,18 @@ namespace BackBAI.Controllers
         }
 
         [HttpPost("PostIdea")]
-        public IActionResult CreateIdea([FromBody]IdeaPresenter ideaPresenter)
+        public IActionResult CreateIdea([FromBody]IdeaDTO IdeaDTO)
         {
             var newIdea = new Idea
             {
-                Title = ideaPresenter.Title,
-                Description = ideaPresenter.Description,
-                FkUsersId = ideaPresenter.FkUsersId,
+                Title = IdeaDTO.Title,
+                Description = IdeaDTO.Description,
+                FkUsersId = IdeaDTO.FkUsersId,
             };
 
-            if (ideaPresenter.IdeaGetCategory != null && ideaPresenter.IdeaGetCategory.Any())
+            if (IdeaDTO.IdeaGetCategory != null && IdeaDTO.IdeaGetCategory.Any())
             {
-                newIdea.IdeaGetCategory = ideaPresenter.IdeaGetCategory
+                newIdea.IdeaGetCategory = IdeaDTO.IdeaGetCategory
                     .Select(categoryDTO => new IdeaGetCategory
                     {
                         CategoryId = categoryDTO.CategoryId,
@@ -79,9 +80,9 @@ namespace BackBAI.Controllers
 
         [HttpPut("{id}/PutIdea")]
 
-        public IActionResult PutBoiteAidees(int id, [FromBody] Idea idea)
+        public IActionResult PutBoiteAidees(int id, [FromBody] IdeaDTO ideaDTO)
         {
-            var resultPutById = _ideaServices.PutIdea(id, idea);
+            var resultPutById = _ideaServices.PutIdea(id, ideaDTO);
 
             if (!resultPutById)
             {

@@ -1,4 +1,5 @@
 ﻿using BackBAI.Models;
+using BackBAI.Models.DTO;
 using BackBAI.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -55,7 +56,7 @@ namespace BackBAI.Controllers
             }
             return Ok(resultDeleteUser);
         }
-        [HttpPut("{id}/PutIdea")]
+        [HttpPut("{id}/PutUsers")]
         public IActionResult PutUsersById(int id, [FromBody] Users users)
         {
             var resultPut = _usersServices.PutUsers(id, users);

@@ -1,6 +1,6 @@
-﻿namespace BackBAI.Models
+﻿namespace BackBAI.Models.DTO
 {
-    public class IdeaPresenter
+    public class IdeaDTO
     {
         public string Title { get; set; }
         public string Description { get; set; }

@@ -1,4 +1,5 @@
 ﻿using BackBAI.Models;
+using BackBAI.Models.DTO;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BackBAI.Services
@@ -40,7 +41,7 @@ namespace BackBAI.Services
             return idea;
         }
         // PUT : Modify a idea
-        public bool PutIdea(int id, Idea idea)
+        public bool PutIdea(int id, IdeaDTO ideaDTO)
         {
             var postBoiteAidees = _context.Idea.Find(id);
 
@@ -50,11 +51,12 @@ namespace BackBAI.Services
             }
 
             if (postBoiteAidees.Title != null)
-                postBoiteAidees.Title = idea.Title;
+                postBoiteAidees.Title = ideaDTO.Title;
 
             if (postBoiteAidees.Description != null)
-                postBoiteAidees.Description = idea.Description;
+                postBoiteAidees.Description = ideaDTO.Description;
 
+            postBoiteAidees.UpdatedAt = DateTime.Now;
 
             _context.SaveChanges();
 

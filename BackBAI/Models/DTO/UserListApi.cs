@@ -1,4 +1,4 @@
-﻿namespace BackBAI.Models
+﻿namespace BackBAI.Models.DTO
 {
     public record RawAppMetaData(
      string? provider,

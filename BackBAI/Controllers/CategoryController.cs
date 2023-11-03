@@ -1,7 +1,10 @@
 ﻿using BackBAI.Models;
+using BackBAI.Models.DTO;
 using BackBAI.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Hosting;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace BackBAI.Controllers
 {
@@ -25,7 +28,7 @@ namespace BackBAI.Controllers
             return Ok(category);
         }
 
-        [HttpGet("categories/{ideaId}")]
+        [HttpGet("categoriy/{ideaId}")]
         public IActionResult GetCategoriesForIdea(int ideaId)
         {
             var categories = _context.IdeaGetCategory
@@ -34,6 +37,17 @@ namespace BackBAI.Controllers
                 .ToList();
 
             return Ok(categories);
+        }
+        [HttpPost]
+        public IActionResult CreateCategory([FromBody] CategoryDTO categoryDto)
+        {
+            var newCategory = new Category
+            {
+                Name = categoryDto.Name,
+            };
+
+            _categoryServices.CreateCategory(newCategory);
+            return Ok("New category created");
         }
     }
 }

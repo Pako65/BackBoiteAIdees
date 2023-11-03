@@ -18,5 +18,13 @@ namespace BackBAI.Services
             var category = _context.Category.ToList();
             return category;
         }
+        //POST : New Category
+        public Category CreateCategory(Category category)
+        {
+            _context.Category.Add(category);
+            _context.SaveChanges();
+
+            return category;
+        }
     }
 }
