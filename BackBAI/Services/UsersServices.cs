@@ -1,4 +1,5 @@
 ﻿using BackBAI.Models;
+using BackBAI.Models.DTO;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BackBAI.Services
@@ -26,7 +27,7 @@ namespace BackBAI.Services
             return users;
         }
         // PUT : Modify a user
-        public bool PutUsers(int id, Users users)
+        public bool PutUsers(int id, UserDTO usersDTO)
         {
             var putUsers = _context.Users.Find(id);
 
@@ -36,10 +37,10 @@ namespace BackBAI.Services
             }
 
             if (putUsers.Email != null)
-                putUsers.Email = users.Email;
+                putUsers.Email = usersDTO.Email;
 
-            if (putUsers.Password != null)
-                putUsers.Password = users.Password;
+            //if (putUsers.Password != null)
+            //    putUsers.Password = usersDTO.Password;
 
             _context.SaveChanges();
 

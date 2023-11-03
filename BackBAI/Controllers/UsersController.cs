@@ -57,9 +57,9 @@ namespace BackBAI.Controllers
             return Ok(resultDeleteUser);
         }
         [HttpPut("{id}/PutUsers")]
-        public IActionResult PutUsersById(int id, [FromBody] Users users)
+        public IActionResult PutUsersById(int id, [FromBody] UserDTO userDTO)
         {
-            var resultPut = _usersServices.PutUsers(id, users);
+            var resultPut = _usersServices.PutUsers(id, userDTO);
 
             if(!resultPut)
             {

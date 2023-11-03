@@ -49,5 +49,29 @@ namespace BackBAI.Controllers
             _categoryServices.CreateCategory(newCategory);
             return Ok("New category created");
         }
+        [HttpDelete("{id}/DeleteCategory")]
+        public IActionResult DeleteCategory(int id)
+        {
+            var result = _categoryServices.DeleteCategoryById(id);
+
+            if (result == false)
+            {
+                return NotFound();
+            }
+            return Ok(result);
+        }
+        [HttpPut("{id}/PutCategory")]
+        public IActionResult PutCategory(int id, [FromBody] CategoryDTO categoryDto)
+        {
+            var result = _categoryServices.PutCategory(id, categoryDto);
+
+            if(!result)
+            {
+                return NotFound();
+            }
+
+            return Ok(result);
+        }
+
     }
 }
