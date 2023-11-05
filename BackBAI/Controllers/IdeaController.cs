@@ -23,21 +23,38 @@ namespace BackBAI.Controllers
         }
 
         [HttpGet("GetAll")]
-        public IActionResult GetIdees()
+        public ActionResult<IEnumerable<IdeaWithCategoryDTO>> GetIdeasWithCategories()
         {
-            var result = _ideaServices.Get();
-            return Ok(result);
+            var ideasWithCategories = _context.Idea
+                .Select(idea => new IdeaWithCategoryDTO
+                {
+                    IdeaId = idea.Id,
+                    Title = idea.Title,
+                    Description = idea.Description,
+                    CategoryId = idea.IdeaGetCategory != null && idea.IdeaGetCategory.Any() ? idea.IdeaGetCategory.First().Category.Id : 0,
+                    CategoryName = idea.IdeaGetCategory != null && idea.IdeaGetCategory.Any() ? idea.IdeaGetCategory.First().Category.Name : "Pas de catégorie"
+                })
+                .ToList();
+
+            return Ok(ideasWithCategories);
         }
 
+
         [HttpGet("{id}/getIdeaById")]
-        public IActionResult GetIdeaById(int id)
+        public ActionResult<IEnumerable<IdeaWithCategoryDTO>> GetIdeaById(int id)
         {
-            var resultById = _ideaServices.GetIdeaById(id);
-            if (resultById == null)
-            {
-                return NotFound();
-            }
-            return Ok(resultById);
+            var ideaCategory = _context.Idea
+                .Where(idea => idea.Id == id)
+                .Select(idea => new IdeaWithCategoryDTO
+                 {
+                    IdeaId= idea.Id,
+                    Title = idea.Title,
+                    Description = idea.Description,
+                    CategoryId = idea.IdeaGetCategory != null && idea.IdeaGetCategory.Any() ? idea.IdeaGetCategory.First().Category.Id : 0,
+                    CategoryName = idea.IdeaGetCategory != null && idea.IdeaGetCategory.Any() ? idea.IdeaGetCategory.First().Category.Name : "Pas de catégorie"
+                })
+                .ToList();
+            return Ok(ideaCategory);
         }
 
         [HttpPost("PostIdea")]

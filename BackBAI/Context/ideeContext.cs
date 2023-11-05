@@ -29,7 +29,7 @@ public partial class ideeContext : DbContext
     {
         modelBuilder.Entity<Category>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__category__3213E83FCCB8389F");
+            entity.HasKey(e => e.Id).HasName("PK__category__3213E83F2DBBD113");
 
             entity.ToTable("category");
 
@@ -42,7 +42,7 @@ public partial class ideeContext : DbContext
 
         modelBuilder.Entity<Comment>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__comment__3213E83F62AD442F");
+            entity.HasKey(e => e.Id).HasName("PK__comment__3213E83FE2E54CED");
 
             entity.ToTable("comment");
 
@@ -69,7 +69,7 @@ public partial class ideeContext : DbContext
 
         modelBuilder.Entity<Idea>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__idea__3213E83F282380BA");
+            entity.HasKey(e => e.Id).HasName("PK__idea__3213E83F3B746393");
 
             entity.ToTable("idea");
 
@@ -78,7 +78,7 @@ public partial class ideeContext : DbContext
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnName("created_at");
             entity.Property(e => e.Description)
-                .HasMaxLength(255)
+                .HasMaxLength(1000)
                 .HasColumnName("description");
             entity.Property(e => e.FkUsersId).HasColumnName("fk_users_id");
             entity.Property(e => e.Title)
@@ -95,7 +95,7 @@ public partial class ideeContext : DbContext
 
         modelBuilder.Entity<IdeaGetCategory>(entity =>
         {
-            entity.HasKey(e => new { e.IdeaId, e.CategoryId }).HasName("PK__idea_get__97E8BA938746D2B6");
+            entity.HasKey(e => new { e.IdeaId, e.CategoryId }).HasName("PK__idea_get__97E8BA93B29F85E3");
 
             entity.ToTable("idea_get_category");
 
@@ -114,7 +114,7 @@ public partial class ideeContext : DbContext
 
         modelBuilder.Entity<Likes>(entity =>
         {
-            entity.HasKey(e => new { e.UsersId, e.IdeaId }).HasName("PK__likes__760C140B619E89CA");
+            entity.HasKey(e => new { e.UsersId, e.IdeaId }).HasName("PK__likes__760C140B83817DD4");
 
             entity.ToTable("likes");
 
@@ -133,7 +133,7 @@ public partial class ideeContext : DbContext
 
         modelBuilder.Entity<Users>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__users__3213E83F3BF994C5");
+            entity.HasKey(e => e.Id).HasName("PK__users__3213E83F21D47E33");
 
             entity.ToTable("users");
 

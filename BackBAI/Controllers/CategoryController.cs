@@ -28,7 +28,7 @@ namespace BackBAI.Controllers
             return Ok(category);
         }
 
-        [HttpGet("categoriy/{ideaId}")]
+        [HttpGet("{ideaId}")]
         public IActionResult GetCategoriesForIdea(int ideaId)
         {
             var categories = _context.IdeaGetCategory
