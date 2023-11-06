@@ -26,14 +26,19 @@ namespace BackBAI.Controllers
         public ActionResult<IEnumerable<IdeaWithCategoryDTO>> GetIdeasWithCategories()
         {
             var ideasWithCategories = _context.Idea
-                .Select(idea => new IdeaWithCategoryDTO
-                {
-                    IdeaId = idea.Id,
-                    Title = idea.Title,
-                    Description = idea.Description,
-                    CategoryId = idea.IdeaGetCategory != null && idea.IdeaGetCategory.Any() ? idea.IdeaGetCategory.First().Category.Id : 0,
-                    CategoryName = idea.IdeaGetCategory != null && idea.IdeaGetCategory.Any() ? idea.IdeaGetCategory.First().Category.Name : "Pas de catégorie"
-                })
+                .Join(
+                    _context.Users, 
+                    idea => idea.FkUsersId, 
+                    user => user.Id, 
+                    (idea, user) => new IdeaWithCategoryDTO
+                    {
+                        IdeaId = idea.Id,
+                        Title = idea.Title,
+                        Description = idea.Description,
+                        CategoryId = idea.IdeaGetCategory != null && idea.IdeaGetCategory.Any() ? idea.IdeaGetCategory.First().Category.Id : 0,
+                        CategoryName = idea.IdeaGetCategory != null && idea.IdeaGetCategory.Any() ? idea.IdeaGetCategory.First().Category.Name : "Pas de catégorie",
+                        OwnerEmail = user.Email 
+                    })
                 .ToList();
 
             return Ok(ideasWithCategories);
