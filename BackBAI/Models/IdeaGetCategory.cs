@@ -9,7 +9,7 @@ public partial class IdeaGetCategory
 {
     public int IdeaId { get; set; }
 
-    public int CategoryId { get; set; }
+    public int? CategoryId { get; set; }
 
     public virtual Category Category { get; set; }
 

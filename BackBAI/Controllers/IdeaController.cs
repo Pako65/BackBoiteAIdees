@@ -73,15 +73,7 @@ namespace BackBAI.Controllers
             };
 
             if (IdeaDTO.IdeaGetCategory != null && IdeaDTO.IdeaGetCategory.Any())
-            {
-                newIdea.IdeaGetCategory = IdeaDTO.IdeaGetCategory
-                    .Select(categoryDTO => new IdeaGetCategory
-                    {
-                        CategoryId = categoryDTO.CategoryId,
-                        Idea = newIdea
-                    })
-                    .ToList();
-            }
+            newIdea.IdeaGetCategory = IdeaDTO.IdeaGetCategory.Select(categoryDTO => new IdeaGetCategory { CategoryId = categoryDTO.CategoryId, Idea = newIdea }).ToList();
 
             _ideaServices.CreateIdea(newIdea);
             return Ok("Idea created youpi");
@@ -94,9 +86,7 @@ namespace BackBAI.Controllers
             var resultDeleteById = _ideaServices.DeleteIdeaAndLikes(id);
 
             if (resultDeleteById == false)
-            {
-                return NotFound();
-            }
+            return NotFound();
             return Ok(resultDeleteById);
         }
 
@@ -107,9 +97,7 @@ namespace BackBAI.Controllers
             var resultPutById = _ideaServices.PutIdea(id, ideaDTO);
 
             if (!resultPutById)
-            {
-                return NotFound();
-            }
+            return NotFound();
 
             return Ok(resultPutById);
         }

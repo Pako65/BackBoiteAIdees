@@ -1,6 +1,7 @@
 ﻿using BackBAI.Models;
 using BackBAI.Models.DTO;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace BackBAI.Services
 {
@@ -42,29 +43,38 @@ namespace BackBAI.Services
         }
         // PUT : Modify a idea
         public bool PutIdea(int id, IdeaDTO ideaDTO)
-
-            //CELA NAJOUTE PAS L'ID CATEGORIE
         {
-            var postBoiteAidees = _context.Idea.Find(id);
+            var ideaToUpdate = _context.Idea.Include(i => i.IdeaGetCategory) .FirstOrDefault(i => i.Id == id);
 
-            if (postBoiteAidees == null)
-            {
+            if (ideaToUpdate == null)
                 return false;
+            
+            if (ideaDTO.Title != null)
+                ideaToUpdate.Title = ideaDTO.Title;
+
+            if (ideaDTO.Description != null)
+                ideaToUpdate.Description = ideaDTO.Description;
+
+            if (ideaDTO.FkUsersId > 0)
+                ideaToUpdate.FkUsersId = ideaDTO.FkUsersId;
+            
+            ideaToUpdate.UpdatedAt = DateTime.Now;
+
+            if (ideaDTO.IdeaGetCategory != null && ideaDTO.IdeaGetCategory.Count > 0)
+            {
+                var newCategoryId = ideaDTO.IdeaGetCategory[0].CategoryId;
+                var ideaCategory = ideaToUpdate.IdeaGetCategory.FirstOrDefault();
+                if (ideaCategory != null)
+                    _context.IdeaGetCategory.Remove(ideaCategory);
+
+                ideaToUpdate.IdeaGetCategory.Add(new IdeaGetCategory { CategoryId = newCategoryId });
             }
-
-            if (postBoiteAidees.Title != null)
-                postBoiteAidees.Title = ideaDTO.Title;
-
-            if (postBoiteAidees.Description != null)
-                postBoiteAidees.Description = ideaDTO.Description;
-
-            postBoiteAidees.UpdatedAt = DateTime.Now;
 
             _context.SaveChanges();
 
             return true;
-
         }
+
         // DELETE : Delete a Idea by id
         public bool DeleteIdeaAndLikes(int id)
         {
