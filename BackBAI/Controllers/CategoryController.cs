@@ -21,7 +21,7 @@ namespace BackBAI.Controllers
             _categoryServices = categoryServices;
         }
 
-        [HttpGet("GetAllComment")]
+        [HttpGet("GetAllCategory")]
         public IActionResult GetCategory()
         {
             var category = _categoryServices.GetCategory();

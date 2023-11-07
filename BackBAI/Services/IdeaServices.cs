@@ -42,6 +42,8 @@ namespace BackBAI.Services
         }
         // PUT : Modify a idea
         public bool PutIdea(int id, IdeaDTO ideaDTO)
+
+            //CELA NAJOUTE PAS L'ID CATEGORIE
         {
             var postBoiteAidees = _context.Idea.Find(id);
 
