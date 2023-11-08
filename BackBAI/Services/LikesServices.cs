@@ -3,6 +3,8 @@ using BackBAI.Models;
 using BackBAI.Models.DTO;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.Data.SqlClient;
+using System.Data;
 
 namespace BackBAI.Services
 {
@@ -16,11 +18,11 @@ namespace BackBAI.Services
         }
 
         //GET : Likes
-        //public IEnumerable<Likes> GetLikes()
-        //{
-        //    var likes = _context.Likes.ToList();
-        //    return likes;
-        //}
+        public IEnumerable<Likes> GetLikes()
+        {
+            var likes = _context.Likes.ToList();
+            return likes;
+        }
         //POST : New Likes
         public async Task<bool> AddLikes(int userId, int ideaId)
         {
@@ -56,11 +58,35 @@ namespace BackBAI.Services
             return false;   
         }
 
+        //FONCTION TotalLikes
+        public int GetTotalLikesForIdea(int ideaId)
+        {
+            using (var connection = new SqlConnection(_context.Database.GetDbConnection().ConnectionString))
+            {
+                connection.Open();
+
+                using (var command = new SqlCommand("SELECT dbo.total_likes(@ideaId) AS TotalLikes", connection))
+                {
+                    command.Parameters.Add(new SqlParameter("@ideaId", ideaId));
+
+                    var result = command.ExecuteScalar();
+
+                    if (result != null && result != DBNull.Value)
+                    {
+                        return (int)result;
+                    }
+                }
+            }
+
+            return 0; // Retourner 0 si la commande SQL ne renvoie pas de résultat.
+        }
+
     }
 }
 
 
 //PROCEDURE STOCKE A AJOUTE DANS LA BDD
+
 //USE[boiteIdee]
 //GO
 ///****** Object:  StoredProcedure [dbo].[TotalLikesById]    Script Date: 08/11/2023 10:30:59 ******/

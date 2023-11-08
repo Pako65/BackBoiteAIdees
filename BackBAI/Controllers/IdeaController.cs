@@ -37,7 +37,8 @@ namespace BackBAI.Controllers
                         Description = idea.Description,
                         CategoryId = idea.IdeaGetCategory != null && idea.IdeaGetCategory.Any() ? idea.IdeaGetCategory.First().Category.Id : 0,
                         CategoryName = idea.IdeaGetCategory != null && idea.IdeaGetCategory.Any() ? idea.IdeaGetCategory.First().Category.Name : "Pas de catégorie",
-                        OwnerEmail = user.Email 
+                        OwnerEmail = user.Email,
+                        IsLiked = _context.Likes.Any(like => like.IdeaId == idea.Id && like.UsersId == user.Id),
                     })
                 .ToList();
 

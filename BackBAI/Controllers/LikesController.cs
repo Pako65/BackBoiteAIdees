@@ -18,13 +18,27 @@ namespace BackBAI.Controllers
             _context = context;
             _likesServices = likesServices;
         }
+        [HttpGet("likecount/{ideaId}")]
+        public IActionResult GetLikeCountForIdea(int ideaId)
+        {
+            try
+            {
+                int likeCount = _likesServices.GetTotalLikesForIdea(ideaId);
+                return Ok(likeCount);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Erreur : {ex.Message}");
+            }
+        }
 
-        //[HttpGet("GetAllLikes")]
-        //public IActionResult GetLikes()
-        //{
-        //    var likes = _likesServices.GetLikes();
-        //    return Ok(likes);
-        //}
+
+        [HttpGet("GetAllLikes")]
+        public IActionResult GetLikes()
+        {
+            var likes = _likesServices.GetLikes();
+            return Ok(likes);
+        }
 
         [HttpPost("PostNewLikes")]
         public async Task<IActionResult> AddLikes(int userId, int ideaId)

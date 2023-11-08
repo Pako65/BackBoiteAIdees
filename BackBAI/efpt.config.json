@@ -38,9 +38,13 @@
       {
          "Name": "[dbo].[users]",
          "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[total_likes]",
+         "ObjectType": 2
       }
    ],
-   "UiHint": "paquito.boiteIdee.dbo",
+   "UiHint": "ml7rm3j.boiteIdee.dbo",
    "UncountableWords": null,
    "UseBoolPropertiesWithoutDefaultSql": false,
    "UseDatabaseNames": false,
