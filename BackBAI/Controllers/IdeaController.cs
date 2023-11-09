@@ -4,6 +4,7 @@ using BackBAI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ActionConstraints;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 using System.ComponentModel.Design;
 
 namespace BackBAI.Controllers
@@ -15,11 +16,13 @@ namespace BackBAI.Controllers
     {
         private ideeContext _context;
         private IdeaServices _ideaServices;
+        private LikesServices _likesServices;
 
-        public IdeaController(ideeContext context, IdeaServices ideaServices)
+        public IdeaController(ideeContext context, IdeaServices ideaServices, LikesServices likesServices)
         {
             _context = context;
             _ideaServices = ideaServices;
+            _likesServices = likesServices;
         }
 
         [HttpGet("GetAll")]
@@ -27,18 +30,20 @@ namespace BackBAI.Controllers
         {
             var ideasWithCategories = _context.Idea
                 .Join(
-                    _context.Users, 
-                    idea => idea.FkUsersId, 
-                    user => user.Id, 
+                    _context.Users,
+                    idea => idea.FkUsersId,
+                    user => user.Id,
                     (idea, user) => new IdeaWithCategoryDTO
                     {
                         IdeaId = idea.Id,
                         Title = idea.Title,
                         Description = idea.Description,
+                        CreatedAt = idea.CreatedAt,
                         CategoryId = idea.IdeaGetCategory != null && idea.IdeaGetCategory.Any() ? idea.IdeaGetCategory.First().Category.Id : 0,
                         CategoryName = idea.IdeaGetCategory != null && idea.IdeaGetCategory.Any() ? idea.IdeaGetCategory.First().Category.Name : "Pas de catégorie",
                         OwnerEmail = user.Email,
                         IsLiked = _context.Likes.Any(like => like.IdeaId == idea.Id && like.UsersId == user.Id),
+                        TotalLikes = _likesServices.GetTotalLikesForIdea(idea.Id) 
                     })
                 .ToList();
 
