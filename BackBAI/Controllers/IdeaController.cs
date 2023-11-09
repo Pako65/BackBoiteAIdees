@@ -36,6 +36,7 @@ namespace BackBAI.Controllers
                     (idea, user) => new IdeaWithCategoryDTO
                     {
                         IdeaId = idea.Id,
+                        UserId = user.Id,
                         Title = idea.Title,
                         Description = idea.Description,
                         CreatedAt = idea.CreatedAt,

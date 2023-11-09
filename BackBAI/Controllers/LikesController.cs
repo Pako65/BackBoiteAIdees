@@ -31,7 +31,19 @@ namespace BackBAI.Controllers
                 return BadRequest($"Erreur : {ex.Message}");
             }
         }
+        [HttpGet("GetUserLikes")]
+        public IActionResult GetUserLikes(int userId)
+        {
+            try
+            {
+                var userLikes = _context.Likes.Where(l => l.UsersId == userId).Select(l => l.IdeaId).ToList();
 
+                return Ok(userLikes);
+            } catch (Exception)
+            {
+                return StatusCode(500, $"Erreur lors de la récupération des likes par users");
+            }
+        }
 
         [HttpGet("GetAllLikes")]
         public IActionResult GetLikes()
