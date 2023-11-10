@@ -23,6 +23,23 @@ namespace BackBAI.Controllers
             var comments = _commentsServices.GetComments();
             return Ok(comments);
         }
+        [HttpGet("{ideaId}/GetByIdeaId")]
+        public ActionResult<IEnumerable<CommentsDTO>> GetCommentsByIdeaId(int ideaId)
+        {
+            var comments = _context.Comment
+                .Where(comment => comment.FkIdeaId == ideaId)
+                .Select(comment => new CommentsDTO
+                {
+                    Text = comment.Text,
+                    CreatedAt = comment.CreatedAt,
+                    UserId = comment.FkUsersIdComment,
+                    IdeaId = comment.FkIdeaId
+                })
+                .ToList();
+
+            return Ok(comments);
+        }
+
         [HttpPost("CreateNewComments")]
         public IActionResult CreateComment([FromBody] CommentsDTO commentsDTO)
         {

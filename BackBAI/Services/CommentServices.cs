@@ -19,6 +19,16 @@ namespace BackBAI.Services
             var comments = _context.Comment.ToList();
             return comments;
         }
+        // GET : getById
+        public Comment? GetCommentById(int id)
+        {
+            var result = _context.Comment.FirstOrDefault(c => c.Id == id);
+
+            if (result == null)
+                return null;
+
+            return result;
+        }
         // POST : new Comments
         public Comment CreateComments(Comment comment)
         {
