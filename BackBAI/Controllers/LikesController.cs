@@ -10,8 +10,8 @@ namespace BackBAI.Controllers
     [Route("Likes")]
     public class LikesController : ControllerBase
     {
-        private ideeContext _context;
-        private LikesServices _likesServices;
+        private readonly ideeContext _context;
+        private readonly LikesServices _likesServices;
 
         public LikesController(ideeContext context, LikesServices likesServices)
         {

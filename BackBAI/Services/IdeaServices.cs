@@ -44,7 +44,7 @@ namespace BackBAI.Services
         // PUT : Modify a idea
         public bool PutIdea(int id, IdeaDTO ideaDTO)
         {
-            var ideaToUpdate = _context.Idea.Include(i => i.IdeaGetCategory) .FirstOrDefault(i => i.Id == id);
+            var ideaToUpdate = _context.Idea.Include(i => i.IdeaGetCategory).FirstOrDefault(i => i.Id == id);
 
             if (ideaToUpdate == null)
                 return false;

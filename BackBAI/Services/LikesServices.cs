@@ -43,7 +43,7 @@ namespace BackBAI.Services
 
             return true;
         }
-
+        // DELETE : Delete likes
         public async Task<bool> DeleteLikes (int userId, int ideaId)
         {
             var likeToDelete = await _context.Likes.FirstOrDefaultAsync(a => a.UsersId == userId &&  a.IdeaId == ideaId);

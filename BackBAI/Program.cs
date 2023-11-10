@@ -13,6 +13,7 @@ builder.Services.AddScoped<IdeaServices>();
 builder.Services.AddScoped<UsersServices>();
 builder.Services.AddScoped<CategoryServices>();
 builder.Services.AddScoped<LikesServices>();
+builder.Services.AddScoped<CommentServices>();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
