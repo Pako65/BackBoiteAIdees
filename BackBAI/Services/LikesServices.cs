@@ -78,7 +78,7 @@ namespace BackBAI.Services
                 }
             }
 
-            return 0; // Retourner 0 si la commande SQL ne renvoie pas de résultat.
+            return 0;
         }
 
     }
