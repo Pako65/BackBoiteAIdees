@@ -17,12 +17,14 @@ namespace BackBAI.Controllers
             _context = context;
             _commentsServices = commentsServices;
         }
+
         [HttpGet("GetComments")]
         public IActionResult GetComments()
         {
             var comments = _commentsServices.GetComments();
             return Ok(comments);
         }
+
         [HttpGet("{ideaId}/GetByIdeaId")]
         public ActionResult<IEnumerable<CommentsDTO>> GetCommentsByIdeaId(int ideaId)
         {
@@ -30,6 +32,7 @@ namespace BackBAI.Controllers
                 .Where(comment => comment.FkIdeaId == ideaId)
                 .Select(comment => new CommentsDTO
                 {
+                    Id = comment.Id,
                     Text = comment.Text,
                     CreatedAt = comment.CreatedAt,
                     UserId = comment.FkUsersIdComment,

@@ -13,12 +13,14 @@ namespace BackBAI.Services
         {
             _context = context;
         }
+
         // GET : Comments
         public IEnumerable<Comment> GetComments()
         {
             var comments = _context.Comment.ToList();
             return comments;
         }
+
         // GET : getById
         public Comment? GetCommentById(int id)
         {
