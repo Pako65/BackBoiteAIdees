@@ -38,7 +38,7 @@ namespace BackBAI.Controllers
 
             return Ok(categories);
         }
-        [HttpPost]
+        [HttpPost("PostNewCategory")]
         public IActionResult CreateCategory([FromBody] CategoryDTO categoryDto)
         {
             var newCategory = new Category

@@ -58,8 +58,8 @@ namespace BackBAI.Controllers
             var ideaCategory = _context.Idea
                 .Where(idea => idea.Id == id)
                 .Select(idea => new IdeaWithCategoryDTO
-                 {
-                    IdeaId= idea.Id,
+                {
+                    IdeaId = idea.Id,
                     Title = idea.Title,
                     Description = idea.Description,
                     CategoryId = idea.IdeaGetCategory != null && idea.IdeaGetCategory.Any() ? idea.IdeaGetCategory.First().Category.Id : 0,
